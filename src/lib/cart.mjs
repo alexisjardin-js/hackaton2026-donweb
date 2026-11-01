@@ -1,3 +1,15 @@
+export const MAX_ITEM_QUANTITY = 20;
+
+export function sanitizeCartQuantities(quantities, items) {
+  if (!quantities || typeof quantities !== 'object' || Array.isArray(quantities)) return {};
+  return Object.fromEntries(items.flatMap((item) => {
+    const quantity = Object.hasOwn(quantities, item.id) ? quantities[item.id] : undefined;
+    return Number.isInteger(quantity) && quantity >= 1 && quantity <= MAX_ITEM_QUANTITY
+      ? [[item.id, quantity]]
+      : [];
+  }));
+}
+
 export function calculateTotal(items, quantities) {
   return items.reduce((total, item) => {
     const quantity = quantities[item.id] ?? 0;

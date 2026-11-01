@@ -78,6 +78,8 @@ async function run() {
   await pageReady();
   assert.equal(await evaluate("document.querySelectorAll('.dish-card').length"), 6);
   assert.equal(await evaluate("document.querySelector('.chat-form input').disabled"), true);
+  assert.equal(await evaluate("document.querySelector('link[rel=icon]')?.getAttribute('href')"), '/favicon.svg');
+  assert.equal(await evaluate("fetch('/favicon.svg').then(r => r.status)"), 200);
   assert.equal(await evaluate('document.documentElement.scrollWidth <= window.innerWidth'), true, 'No debe haber scroll horizontal en móvil');
   const imageStatuses = await evaluate("Promise.all([...document.querySelectorAll('.dish-image img')].map(img => fetch(img.src).then(r => r.status)))");
   assert.deepEqual(imageStatuses, [200, 200, 200, 200, 200, 200]);
@@ -128,9 +130,18 @@ async function run() {
   const orderScreenshot = await command('Page.captureScreenshot', { format: 'png' });
   writeFileSync(join(evidenceDir, 'mobile-pedido.png'), Buffer.from(orderScreenshot.data, 'base64'));
   console.log('OK: modalidad retiro → enlace WhatsApp con nombre');
+  const savedCart = await evaluate("JSON.parse(localStorage.getItem('il-caminneto-cart-v1'))?.state?.quantities");
+  assert.equal(Object.values(savedCart).reduce((sum, quantity) => sum + quantity, 0), 1);
+  await command('Page.reload', { ignoreCache: true });
+  await pageReady();
+  await waitFor(() => evaluate("document.querySelector('.header-cart')?.getAttribute('aria-label')?.includes('1 productos')"));
+  await evaluate("document.querySelector('.header-cart').click()");
+  await waitFor(() => evaluate("!!document.querySelector('.cart-drawer .cart-line')"));
+  console.log('OK: el carrito se restaura desde localStorage al recargar');
   await evaluate("document.querySelector('.clear-cart').click()");
   await waitFor(() => evaluate("!!document.querySelector('.empty-cart')"));
   assert.match(await evaluate("document.querySelector('.header-cart')?.getAttribute('aria-label')"), /0 productos/);
+  assert.deepEqual(await evaluate("JSON.parse(localStorage.getItem('il-caminneto-cart-v1'))?.state?.quantities"), {});
   console.log('OK: vaciar pedido deja el carrito sin productos');
 
   const outOfScope = await evaluate("fetch('/api/chat', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: 'Explicame programación en Python', mode: 'takeaway' }) }).then(r => r.json())");

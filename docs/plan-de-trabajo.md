@@ -15,7 +15,7 @@ El restaurante pierde oportunidades porque responde a mano consultas repetidas y
 - Carta de tamaño acotado en `src/data/menu.json`, fuente única de platos, descripciones, ingredientes informados y precios de demostración; seis fotografías generadas en `public/images/menu/`.
 - Interfaz gastronómica personalizada, responsive y con paleta e iconografía consistentes.
 - Asistente de IA centrado exclusivamente en el restaurante y la carta. Si falta un dato, reconoce el límite y deriva al personal.
-- Carrito con cantidades y total calculado por código a partir del JSON; la IA no fija precios ni confirma disponibilidad.
+- Carrito con cantidades y total calculado por código a partir del JSON; se conserva en `localStorage` entre recargas, admite vaciarlo y descarta datos obsoletos o inválidos al restaurar. La IA no fija precios ni confirma disponibilidad.
 - Resumen de pedido y salida a WhatsApp para confirmación por el restaurante.
 - Sin base de datos, pagos, integración directa con mensajes entrantes de WhatsApp ni automatización telefónica en esta primera entrega.
 
@@ -25,7 +25,7 @@ El restaurante pierde oportunidades porque responde a mano consultas repetidas y
 2. Elige al comenzar si está en una mesa del local o si pasará a retirar; hasta elegirlo, el chat indica el paso y no envía consultas. La mesa o el nombre se piden recién al cerrar el pedido.
 3. Pregunta por un plato, una preferencia o un presupuesto.
 4. El asistente contesta usando la carta JSON, la modalidad, hasta seis mensajes recientes y el carrito calculado desde el catálogo del servidor. Puede devolver IDs de hasta tres platos sugeridos; la aplicación valida esos IDs contra el JSON y muestra botones para agregarlos. Ante temas externos o datos ausentes, responde brevemente que no puede confirmarlos.
-5. El visitante decide qué sugerencias agregar, puede revisar su pedido directamente desde el chat y modifica cantidades en el carrito; la IA nunca agrega por sí sola.
+5. El visitante decide qué sugerencias agregar, puede revisar su pedido directamente desde el chat, modificar cantidades o vaciar el carrito; la IA nunca agrega por sí sola. El carrito se recupera al recargar la página.
 6. La aplicación calcula el total desde el catálogo y muestra el resumen.
 7. El visitante abre WhatsApp con modalidad, mesa o nombre y pedido precompletados; el restaurante lo confirma. No se presenta como pedido aceptado antes de esa confirmación.
 
@@ -36,7 +36,7 @@ El restaurante pierde oportunidades porque responde a mano consultas repetidas y
 | Páginas y renderizado | Astro SSR |
 | Interacción | Islas React para asistente y carrito |
 | Estilos | Tailwind + tokens visuales propios |
-| Estado temporal del cliente | Zustand; no sustituye persistencia del negocio |
+| Estado del cliente | Zustand con `localStorage` para el carrito; no sustituye persistencia del negocio |
 | Validación | Zod, en especial para entrada al endpoint y esquema del menú |
 | Datos de carta | JSON local versionado, sin secretos |
 | IA | Endpoint del servidor; clave solo en variable de entorno del servidor |
@@ -46,7 +46,7 @@ El restaurante pierde oportunidades porque responde a mano consultas repetidas y
 
 ## Verificación E2E local — 1 de noviembre
 
-`node scripts/e2e.mjs` ejecutó Astro en modo desarrollo y Chrome headless, sin build. Resultado: **aprobado** en viewport móvil de 390 px y desktop de 1366 px. Se comprobaron seis platos e imágenes, ausencia de desborde horizontal, selección de modalidad, recomendación real del mozo con tarjetas para agregar, cambios de cantidad y total en el carrito, y enlaces de WhatsApp para mesa y retiro. También se verificó rechazo de una consulta ajena, derivación de una pregunta sobre celiaquía al restaurante y HTTP 400 para entrada inválida. El enlace se inspeccionó, **no se envió un mensaje real**. Evidencia visual en `docs/evidence/`.
+`node scripts/e2e.mjs` ejecutó Astro en modo desarrollo y Chrome headless, sin build. Resultado: **aprobado** en viewport móvil de 390 px y desktop de 1366 px. Se comprobaron favicon, seis platos e imágenes, ausencia de desborde horizontal, selección de modalidad, recomendación real del mozo con tarjetas para agregar, cambios de cantidad y total en el carrito, persistencia al recargar, vaciado del carrito y enlaces de WhatsApp para mesa y retiro. También se verificó rechazo de una consulta ajena, derivación de una pregunta sobre celiaquía al restaurante y HTTP 400 para entrada inválida. El enlace se inspeccionó, **no se envió un mensaje real**. Evidencia visual en `docs/evidence/`.
 
 El E2E descubrió un rechazo incorrecto de consultas sobre celiaquía cuando se mencionaba un plato por su nombre corto; se corrigió el filtro y se agregó prueba de regresión. El usuario reportó luego un **HTTP 503 del chat en su entorno**; el origen exacto sigue pendiente de confirmar. En este código, `/api/chat` devuelve 503 si falta `OPENAI_API_KEY` o `OPENAI_MODEL` en el proceso SSR; un 503 generado por Nginx sería una causa distinta. No publicar una conclusión hasta ver el cuerpo de la respuesta.
 
@@ -64,6 +64,7 @@ El E2E descubrió un rechazo incorrecto de consultas sobre celiaquía cuando se 
 - [x] La carta visible toma los datos del JSON. (E2E local: seis platos e imágenes HTTP 200.)
 - [x] La UI tiene identidad gastronómica propia, no apariencia genérica de chatbot. (Capturas móvil y desktop revisadas.)
 - [x] El total no depende de texto generado por IA. (Prueba unitaria aprobada.)
+- [x] El carrito sobrevive a una recarga y Vaciar pedido lo elimina también de `localStorage`. (E2E local aprobado.)
 - [x] En los casos E2E probados, la IA recomendó platos de la carta y la consulta ajena fue rechazada. (No es garantía para todas las preguntas posibles.)
 - [x] En el caso E2E probado, una pregunta sobre celiaquía derivó a confirmación humana.
 - [x] El enlace de WhatsApp contiene modalidad, mesa o nombre, ítems, cantidades y total correcto. (E2E local verificó el URL; envío real pendiente.)

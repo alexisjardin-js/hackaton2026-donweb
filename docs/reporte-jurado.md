@@ -20,7 +20,7 @@ La atención por teléfono y WhatsApp concentra preguntas frecuentes y pedidos e
 - Carta digital basada en un archivo JSON versionado.
 - Asistente de IA restringido a la información del restaurante y la carta.
 - Recomendaciones relevantes para la decisión de compra, con contexto reciente de la charla y del carrito, sin inventar datos.
-- Carrito y total calculados de forma determinista.
+- Carrito persistente entre recargas, con opción de vaciarlo y total calculado de forma determinista.
 - Modalidad explícita: mesa del local con número, o takeaway con nombre para el retiro.
 - Pedido estructurado listo para enviar por WhatsApp y confirmar con una persona.
 
@@ -33,7 +33,7 @@ La experiencia se presenta como un **mozo digital integrado a una carta con iden
 1. Abrir la carta desde la URL pública. **Estado:** interfaz implementada; despliegue y prueba pública pendientes.
 2. Elegir modalidad y consultar por una recomendación basada en el menú. **Estado:** recorrido E2E local aprobado con respuesta real de OpenAI y sugerencias accionables.
 3. Hacer una pregunta ajena al restaurante y observar el límite de respuesta. **Estado:** rechazo comprobado en E2E local.
-4. Agregar un plato recomendado por el mozo, abrir el pedido desde el chat, cambiar cantidades y verificar el total. **Estado:** recorrido E2E local aprobado en viewport móvil.
+4. Agregar un plato recomendado por el mozo, abrir el pedido desde el chat, cambiar cantidades, recargar, verificar que persiste y poder vaciarlo. **Estado:** recorrido E2E local aprobado en viewport móvil.
 5. Preparar WhatsApp con el resumen del pedido. **Estado:** URL comprobada para mesa y retiro; no se envió un mensaje real.
 
 ## Decisiones técnicas
@@ -42,7 +42,7 @@ La experiencia se presenta como un **mozo digital integrado a una carta con iden
 | --- | --- | --- |
 | Framework | Astro SSR + componente React interactivo para carta y carrito | E2E local aprobado; despliegue pendiente de verificar |
 | Estilos | Tailwind con paleta y diseño propios | Capturas móvil y desktop revisadas |
-| Estado de interfaz | Zustand para carrito | Implementado |
+| Estado de interfaz | Zustand + `localStorage` para carrito; datos inválidos filtrados al restaurar | E2E local aprobado |
 | Validación | Zod para consulta y salida estructurada, con IDs contrastados contra JSON | Implementado; pruebas unitarias aprobadas |
 | Carta | `src/data/menu.json`: seis platos con precios de demo e imágenes generadas | Seis imágenes verificadas por HTTP y decodificación |
 | Base de datos | No incluida en el MVP; no se almacenan pedidos en un panel | Propuesto |

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ArrowRight, ChefHat, MapPin, Minus, Plus, ShoppingBag, Sparkles, Store, Trash2, UtensilsCrossed, X } from 'lucide-react';
 import { useCart } from '../store/cart';
 import { calculateTotal, createWhatsAppOrderUrl, formatPrice } from '../lib/cart.mjs';
@@ -18,6 +18,7 @@ type Item = {
 };
 
 export default function MenuApp({ items, categories, whatsappNumber }: { items: Item[]; categories: Category[]; whatsappNumber: string }) {
+  useEffect(() => { void useCart.persist.rehydrate(); }, []);
   const [activeCategory, setActiveCategory] = useState('todos');
   const [cartOpen, setCartOpen] = useState(false);
   const [serviceMode, setServiceMode] = useState<ServiceMode>(null);

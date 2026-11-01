@@ -1,7 +1,13 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import menu from '../src/data/menu.json' with { type: 'json' };
-import { calculateTotal, createWhatsAppOrderUrl } from '../src/lib/cart.mjs';
+import { calculateTotal, createWhatsAppOrderUrl, sanitizeCartQuantities } from '../src/lib/cart.mjs';
+
+test('restaura solo cantidades válidas de platos de la carta', () => {
+  const id = menu.items[0].id;
+  assert.deepEqual(sanitizeCartQuantities({ [id]: 2, inventado: 4, [menu.items[1].id]: -1 }, menu.items), { [id]: 2 });
+  assert.deepEqual(sanitizeCartQuantities(null, menu.items), {});
+});
 
 test('el total usa precios del JSON y cantidades, no texto de IA', () => {
   const [first, second] = menu.items;
