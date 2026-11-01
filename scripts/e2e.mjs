@@ -128,6 +128,10 @@ async function run() {
   const orderScreenshot = await command('Page.captureScreenshot', { format: 'png' });
   writeFileSync(join(evidenceDir, 'mobile-pedido.png'), Buffer.from(orderScreenshot.data, 'base64'));
   console.log('OK: modalidad retiro → enlace WhatsApp con nombre');
+  await evaluate("document.querySelector('.clear-cart').click()");
+  await waitFor(() => evaluate("!!document.querySelector('.empty-cart')"));
+  assert.match(await evaluate("document.querySelector('.header-cart')?.getAttribute('aria-label')"), /0 productos/);
+  console.log('OK: vaciar pedido deja el carrito sin productos');
 
   const outOfScope = await evaluate("fetch('/api/chat', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: 'Explicame programación en Python', mode: 'takeaway' }) }).then(r => r.json())");
   assert.match(outOfScope.answer, /otros temas no tengo información/);
