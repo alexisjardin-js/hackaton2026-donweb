@@ -8,11 +8,11 @@ export function isRestaurantQuestion(question, menu) {
     'hola', 'buenas', 'recomend', 'suger', 'comer', 'cenar', 'almorz',
     'pedir', 'pedido', 'carta', 'menu', 'plato', 'comida', 'restaurant',
     'precio', 'cuanto sale', 'cuanto cuesta', 'ingrediente', 'alergen',
-    'sin gluten', 'vegetarian', 'vegano', 'bebida', 'postre', 'entrada',
+    'alerg', 'celiac', 'tacc', 'intoleran', 'sin gluten', 'vegetarian', 'vegano', 'bebida', 'postre', 'entrada',
     'disponib', 'horario', 'delivery', 'retir', 'mesa', 'reserva',
     normalize(menu.restaurant.name),
     ...menu.categories.map((category) => normalize(category.name)),
-    ...menu.items.flatMap((item) => [normalize(item.name), ...item.ingredients.map(normalize)]),
+    ...menu.items.flatMap((item) => [normalize(item.name), normalize(item.name).split(' ')[0], ...item.ingredients.map(normalize)]),
   ];
   return terms.some((term) => value.includes(term));
 }
