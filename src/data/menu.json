@@ -1,0 +1,78 @@
+{
+  "restaurant": {
+    "name": "Il Caminneto",
+    "city": "Pueblo Esther",
+    "province": "Santa Fe",
+    "country": "Argentina",
+    "currency": "ARS",
+    "menuStatus": "demo",
+    "notice": "Carta, precios e imágenes creados para la demostración de la hackatón. No representan la oferta ni los precios reales del restaurante. Confirmar ingredientes, alérgenos, disponibilidad y precio final antes de aceptar un pedido."
+  },
+  "categories": [
+    { "id": "entradas", "name": "Para empezar" },
+    { "id": "principales", "name": "Platos principales" },
+    { "id": "postres", "name": "Algo dulce" }
+  ],
+  "items": [
+    {
+      "id": "provoleta",
+      "categoryId": "entradas",
+      "name": "Provoleta al horno",
+      "description": "Provoleta dorada con orégano, tomates cherry y pan rústico.",
+      "ingredients": ["provoleta", "orégano", "tomates cherry", "pan rústico"],
+      "price": 10500,
+      "image": "/images/menu/provoleta.png",
+      "featured": false
+    },
+    {
+      "id": "burrata",
+      "categoryId": "entradas",
+      "name": "Burrata con tomates",
+      "description": "Burrata, tomates frescos, albahaca, oliva y tostadas de masa madre.",
+      "ingredients": ["burrata", "tomate", "albahaca", "aceite de oliva", "pan de masa madre"],
+      "price": 13900,
+      "image": "/images/menu/burrata.png",
+      "featured": false
+    },
+    {
+      "id": "pizza-margherita",
+      "categoryId": "principales",
+      "name": "Pizza Margherita",
+      "description": "Masa artesanal, salsa de tomate, mozzarella y albahaca fresca.",
+      "ingredients": ["masa de pizza", "salsa de tomate", "mozzarella", "albahaca"],
+      "price": 18500,
+      "image": "/images/menu/pizza-margherita.png",
+      "featured": true
+    },
+    {
+      "id": "sorrentinos",
+      "categoryId": "principales",
+      "name": "Sorrentinos de ricota y espinaca",
+      "description": "Pasta rellena con salsa de tomate y albahaca, terminada con parmesano.",
+      "ingredients": ["pasta", "ricota", "espinaca", "salsa de tomate", "albahaca", "parmesano"],
+      "price": 21400,
+      "image": "/images/menu/sorrentinos.png",
+      "featured": true
+    },
+    {
+      "id": "milanesa-napolitana",
+      "categoryId": "principales",
+      "name": "Milanesa napolitana",
+      "description": "Milanesa con salsa de tomate, mozzarella y orégano, acompañada de papas rústicas.",
+      "ingredients": ["milanesa de carne", "salsa de tomate", "mozzarella", "orégano", "papas"],
+      "price": 23900,
+      "image": "/images/menu/milanesa-napolitana.png",
+      "featured": true
+    },
+    {
+      "id": "tiramisu",
+      "categoryId": "postres",
+      "name": "Tiramisú de la casa",
+      "description": "Capas de mascarpone y bizcochos al café, con cacao por encima.",
+      "ingredients": ["mascarpone", "bizcochos", "café", "cacao"],
+      "price": 8900,
+      "image": "/images/menu/tiramisu.png",
+      "featured": false
+    }
+  ]
+}

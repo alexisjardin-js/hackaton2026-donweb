@@ -1,0 +1,14 @@
+# Dependencias y artefactos de Astro
+node_modules/
+.astro/
+dist/
+
+# Secretos locales: solo se versionan plantillas sin valores reales
+.env
+.env.*
+!.env.example
+
+# Archivos locales del editor y del sistema
+.DS_Store
+Thumbs.db
+.vscode/
