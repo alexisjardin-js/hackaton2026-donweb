@@ -1,6 +1,6 @@
 # Plan de trabajo — Mozo digital para restaurante
 
-**Estado:** implementación en curso (mozo con sugerencias y contexto del pedido; recorrido en navegador y despliegue pendientes)
+**Estado:** MVP local verificado con E2E en Chrome; validación del entorno desplegado pendiente.
 **Restricción:** entrega pública en Cloud Server de DonWeb antes de las 18:30 del evento.  
 **Repositorio objetivo:** https://github.com/alexisjardin-js/hackaton2026-donweb.git  
 **Nota:** código publicado en `origin/main`; el despliegue lo realiza el equipo por separado.
@@ -42,7 +42,13 @@ El restaurante pierde oportunidades porque responde a mano consultas repetidas y
 | IA | Endpoint del servidor; clave solo en variable de entorno del servidor |
 | Pedidos | Mensaje precompletado de WhatsApp; confirmación humana |
 
-**Modelo elegido:** GPT-6 Luna, configurado localmente junto con la clave en `.env` ignorado. La API respondió en una prueba mínima y una prueba de salida estructurada. Pendiente: verificar el recorrido completo y el servidor de despliegue.
+**Modelo elegido:** GPT-6 Luna, configurado localmente junto con la clave en `.env` ignorado. El E2E local obtuvo respuestas reales del mozo. Pendiente: verificar las variables de entorno y el recorrido en el servidor desplegado.
+
+## Verificación E2E local — 1 de noviembre
+
+`node scripts/e2e.mjs` ejecutó Astro en modo desarrollo y Chrome headless, sin build. Resultado: **aprobado** en viewport móvil de 390 px y desktop de 1366 px. Se comprobaron seis platos e imágenes, ausencia de desborde horizontal, selección de modalidad, recomendación real del mozo con tarjetas para agregar, cambios de cantidad y total en el carrito, y enlaces de WhatsApp para mesa y retiro. También se verificó rechazo de una consulta ajena, derivación de una pregunta sobre celiaquía al restaurante y HTTP 400 para entrada inválida. El enlace se inspeccionó, **no se envió un mensaje real**. Evidencia visual en `docs/evidence/`.
+
+El E2E descubrió un rechazo incorrecto de consultas sobre celiaquía cuando se mencionaba un plato por su nombre corto; se corrigió el filtro y se agregó prueba de regresión. El usuario reportó luego un **HTTP 503 del chat en su entorno**; el origen exacto sigue pendiente de confirmar. En este código, `/api/chat` devuelve 503 si falta `OPENAI_API_KEY` o `OPENAI_MODEL` en el proceso SSR; un 503 generado por Nginx sería una causa distinta. No publicar una conclusión hasta ver el cuerpo de la respuesta.
 
 ## Plan por bloques (orientativo, no cronómetro rígido)
 
@@ -55,15 +61,16 @@ El restaurante pierde oportunidades porque responde a mano consultas repetidas y
 
 ## Criterios de aceptación
 
-- [x] La carta visible toma los datos del JSON. (Verificado con revisión de código; prueba HTTP pendiente.)
-- [x] La UI tiene identidad gastronómica propia, no apariencia genérica de chatbot. (Implementada; revisión visual pendiente.)
+- [x] La carta visible toma los datos del JSON. (E2E local: seis platos e imágenes HTTP 200.)
+- [x] La UI tiene identidad gastronómica propia, no apariencia genérica de chatbot. (Capturas móvil y desktop revisadas.)
 - [x] El total no depende de texto generado por IA. (Prueba unitaria aprobada.)
-- [ ] La IA no da datos inexistentes ni responde consultas ajenas al restaurante. (Guardia local y salida estructurada probadas; recorrido completo pendiente.)
-- [ ] Una pregunta sobre alergias/ingredientes no documentados deriva a confirmación humana. (Instrucción implementada; modelo real pendiente de verificar.)
-- [x] El enlace de WhatsApp contiene modalidad, mesa o nombre, ítems, cantidades y total correcto. (Prueba unitaria aprobada; apertura real pendiente.)
-- [ ] El flujo funciona en móvil.
-- [ ] La clave de IA no aparece en el cliente, en el JSON, en los documentos ni en Git.
+- [x] En los casos E2E probados, la IA recomendó platos de la carta y la consulta ajena fue rechazada. (No es garantía para todas las preguntas posibles.)
+- [x] En el caso E2E probado, una pregunta sobre celiaquía derivó a confirmación humana.
+- [x] El enlace de WhatsApp contiene modalidad, mesa o nombre, ítems, cantidades y total correcto. (E2E local verificó el URL; envío real pendiente.)
+- [x] El flujo funciona en Chrome emulando un móvil de 390 px. (Dispositivo físico pendiente.)
+- [ ] La clave de IA no aparece en el cliente, en el JSON, en los documentos ni en Git. (`.env` ignorado y no trackeado; revisar artefacto de producción.)
 - [ ] La URL desplegada funciona desde otro dispositivo.
+- [ ] Resolver el HTTP 503 del chat reportado en el entorno desplegado y repetir allí los casos críticos.
 
 ## Riesgos y medidas
 

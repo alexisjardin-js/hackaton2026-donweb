@@ -1,6 +1,6 @@
 # Reporte para el jurado — Mozo digital para restaurante
 
-**Estado:** borrador vivo; completar únicamente con funcionalidades verificadas.  
+**Estado:** E2E local aprobado; entorno público pendiente de verificación.
 **Demo pública:** pendiente  
 **Repositorio:** https://github.com/alexisjardin-js/hackaton2026-donweb.git
 **Restaurante de la demo:** Il Caminneto, Pueblo Esther, Santa Fe.
@@ -31,22 +31,22 @@ La experiencia se presenta como un **mozo digital integrado a una carta con iden
 ## Recorrido de demo (actualizar con evidencia)
 
 1. Abrir la carta desde la URL pública. **Estado:** interfaz implementada; despliegue y prueba pública pendientes.
-2. Elegir modalidad y consultar por una recomendación basada en el menú. **Estado:** selector al inicio, chat habilitado después de elegir, preguntas rápidas adaptadas a la modalidad y sugerencias accionables implementadas; recorrido en navegador pendiente.
-3. Hacer una pregunta ajena al restaurante y observar el límite de respuesta. **Estado:** guardia local probada; comportamiento del modelo real pendiente.
-4. Agregar un plato recomendado por el mozo, abrir el pedido desde el chat, cambiar cantidades y verificar el total. **Estado:** validación de IDs y cálculo probados de forma unitaria; interacción en navegador pendiente.
-5. Abrir WhatsApp con el resumen del pedido. **Estado:** enlace implementado y probado de forma unitaria; número local configurado, apertura real pendiente.
+2. Elegir modalidad y consultar por una recomendación basada en el menú. **Estado:** recorrido E2E local aprobado con respuesta real de OpenAI y sugerencias accionables.
+3. Hacer una pregunta ajena al restaurante y observar el límite de respuesta. **Estado:** rechazo comprobado en E2E local.
+4. Agregar un plato recomendado por el mozo, abrir el pedido desde el chat, cambiar cantidades y verificar el total. **Estado:** recorrido E2E local aprobado en viewport móvil.
+5. Preparar WhatsApp con el resumen del pedido. **Estado:** URL comprobada para mesa y retiro; no se envió un mensaje real.
 
 ## Decisiones técnicas
 
 | Área | Decisión | Estado |
 | --- | --- | --- |
-| Framework | Astro SSR + componente React interactivo para carta y carrito | Implementado; despliegue pendiente |
-| Estilos | Tailwind con paleta y diseño propios | Implementado; revisión visual pendiente |
+| Framework | Astro SSR + componente React interactivo para carta y carrito | E2E local aprobado; despliegue pendiente de verificar |
+| Estilos | Tailwind con paleta y diseño propios | Capturas móvil y desktop revisadas |
 | Estado de interfaz | Zustand para carrito | Implementado |
 | Validación | Zod para consulta y salida estructurada, con IDs contrastados contra JSON | Implementado; pruebas unitarias aprobadas |
-| Carta | `src/data/menu.json`: seis platos con precios de demo e imágenes generadas | Interfaz implementada; revisión visual pendiente |
+| Carta | `src/data/menu.json`: seis platos con precios de demo e imágenes generadas | Seis imágenes verificadas por HTTP y decodificación |
 | Base de datos | No incluida en el MVP; no se almacenan pedidos en un panel | Propuesto |
-| Proveedor de IA | OpenAI Responses API desde endpoint SSR; modelo GPT-6 Luna | Clave/modelo locales configurados; prueba mínima de API aprobada; flujo completo pendiente |
+| Proveedor de IA | OpenAI Responses API desde endpoint SSR; modelo GPT-6 Luna | Flujo local real aprobado; usuario reportó HTTP 503 en su entorno, pendiente diagnosticar |
 | Despliegue | Servidor cloud de Donweb; configuración por verificar | Pendiente |
 
 ## Seguridad y límites explícitos
@@ -62,11 +62,14 @@ La experiencia se presenta como un **mozo digital integrado a una carta con iden
 | Métrica o evidencia | Resultado |
 | --- | --- |
 | URL pública | Pendiente |
-| Captura de carta | Pendiente |
-| Consulta respondida con datos del menú | Pendiente |
-| Consulta fuera de alcance rechazada | Pendiente |
-| Pedido completo probado en móvil | Pendiente |
+| Captura de carta | `docs/evidence/mobile-carta.png` y `docs/evidence/desktop-carta.png` |
+| Consulta respondida con datos del menú | Aprobada en E2E local con respuesta real del modelo |
+| Consulta fuera de alcance rechazada | Aprobada en E2E local |
+| Consulta de celiaquía | El mozo no garantizó aptitud y derivó a confirmación humana |
+| Pedido completo probado en móvil | Aprobado en Chrome headless emulando 390 px; `docs/evidence/mobile-pedido.png` |
 | Tiempo de respuesta observado | Pendiente de medir |
+
+**Advertencia de entrega:** el usuario reportó HTTP 503 del chat en su entorno. No presentar la IA como verificada en producción hasta identificar la respuesta de `/api/chat` y repetir allí la prueba. Un 503 emitido por el endpoint indica ausencia de `OPENAI_API_KEY` o `OPENAI_MODEL` en el proceso SSR; un 503 de Nginx requiere otro diagnóstico.
 
 ## Próximos pasos después de la hackatón
 
