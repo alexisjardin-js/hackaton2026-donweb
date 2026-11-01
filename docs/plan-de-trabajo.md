@@ -22,10 +22,10 @@ El restaurante pierde oportunidades porque responde a mano consultas repetidas y
 ## Flujo demostrable
 
 1. El visitante abre la carta, ve categorías, fotos, precios y acceso al asistente.
-2. Elige al comenzar si está en una mesa del local o si pasará a retirar. La mesa o el nombre se piden recién al cerrar el pedido.
+2. Elige al comenzar si está en una mesa del local o si pasará a retirar; hasta elegirlo, el chat indica el paso y no envía consultas. La mesa o el nombre se piden recién al cerrar el pedido.
 3. Pregunta por un plato, una preferencia o un presupuesto.
 4. El asistente contesta usando la carta JSON, la modalidad, hasta seis mensajes recientes y el carrito calculado desde el catálogo del servidor. Puede devolver IDs de hasta tres platos sugeridos; la aplicación valida esos IDs contra el JSON y muestra botones para agregarlos. Ante temas externos o datos ausentes, responde brevemente que no puede confirmarlos.
-5. El visitante decide qué sugerencias agregar y modifica cantidades en el carrito; la IA nunca agrega por sí sola.
+5. El visitante decide qué sugerencias agregar, puede revisar su pedido directamente desde el chat y modifica cantidades en el carrito; la IA nunca agrega por sí sola.
 6. La aplicación calcula el total desde el catálogo y muestra el resumen.
 7. El visitante abre WhatsApp con modalidad, mesa o nombre y pedido precompletados; el restaurante lo confirma. No se presenta como pedido aceptado antes de esa confirmación.
 

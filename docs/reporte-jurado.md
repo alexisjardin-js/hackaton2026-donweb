@@ -31,9 +31,9 @@ La experiencia se presenta como un **mozo digital integrado a una carta con iden
 ## Recorrido de demo (actualizar con evidencia)
 
 1. Abrir la carta desde la URL pública. **Estado:** interfaz implementada; despliegue y prueba pública pendientes.
-2. Elegir modalidad y consultar por una recomendación basada en el menú. **Estado:** selector al inicio y sugerencias accionables implementadas; recorrido en navegador pendiente.
+2. Elegir modalidad y consultar por una recomendación basada en el menú. **Estado:** selector al inicio, chat habilitado después de elegir, preguntas rápidas adaptadas a la modalidad y sugerencias accionables implementadas; recorrido en navegador pendiente.
 3. Hacer una pregunta ajena al restaurante y observar el límite de respuesta. **Estado:** guardia local probada; comportamiento del modelo real pendiente.
-4. Agregar un plato recomendado por el mozo, cambiar cantidades y verificar el total. **Estado:** validación de IDs y cálculo probados de forma unitaria; interacción en navegador pendiente.
+4. Agregar un plato recomendado por el mozo, abrir el pedido desde el chat, cambiar cantidades y verificar el total. **Estado:** validación de IDs y cálculo probados de forma unitaria; interacción en navegador pendiente.
 5. Abrir WhatsApp con el resumen del pedido. **Estado:** enlace implementado y probado de forma unitaria; número local configurado, apertura real pendiente.
 
 ## Decisiones técnicas
