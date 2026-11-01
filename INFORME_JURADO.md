@@ -1,9 +1,9 @@
 # Il Caminneto — informe para el jurado
 
-**Proyecto:** mozo digital para un restaurante de Pueblo Esther, Santa Fe  
-**Desafío:** reducir ventas perdidas por consultas y pedidos atendidos manualmente por WhatsApp o teléfono  
-**Repositorio:** https://github.com/alexisjardin-js/hackaton2026-donweb  
-**Demo pública:** pendiente de incorporar la URL verificada
+- **Proyecto:** mozo digital para un restaurante de Pueblo Esther, Santa Fe.
+- **Desafío:** reducir ventas perdidas por consultas y pedidos atendidos manualmente por WhatsApp o teléfono.
+- **Repositorio:** https://github.com/alexisjardin-js/hackaton2026-donweb
+- **Demo pública:** pendiente de incorporar la URL verificada.
 
 ## El problema
 
