@@ -9,7 +9,7 @@ export function isRestaurantQuestion(question, menu) {
     'pedir', 'pedido', 'carta', 'menu', 'plato', 'comida', 'restaurant',
     'precio', 'cuanto sale', 'cuanto cuesta', 'ingrediente', 'alergen',
     'sin gluten', 'vegetarian', 'vegano', 'bebida', 'postre', 'entrada',
-    'disponib', 'horario', 'delivery', 'retiro', 'mesa', 'reserva',
+    'disponib', 'horario', 'delivery', 'retir', 'mesa', 'reserva',
     normalize(menu.restaurant.name),
     ...menu.categories.map((category) => normalize(category.name)),
     ...menu.items.flatMap((item) => [normalize(item.name), ...item.ingredients.map(normalize)]),

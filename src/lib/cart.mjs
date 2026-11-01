@@ -16,13 +16,21 @@ export function formatPrice(amount) {
   }).format(amount);
 }
 
-export function createWhatsAppOrderUrl(items, quantities, phone) {
+export function createWhatsAppOrderUrl(items, quantities, phone, fulfillment) {
   if (!/^\d{8,15}$/.test(phone)) return null;
   const selected = items.filter((item) => (quantities[item.id] ?? 0) > 0);
   if (selected.length === 0) return null;
+  let destination;
+  if (fulfillment?.type === 'table' && /^[a-zA-Z0-9-]{1,10}$/.test(fulfillment.table?.trim() ?? '')) {
+    destination = ['Modalidad: En el local', `Mesa: ${fulfillment.table.trim()}`];
+  } else if (fulfillment?.type === 'takeaway' && /^[\p{L}\p{M} .'-]{2,60}$/u.test(fulfillment.name?.trim() ?? '')) {
+    destination = ['Modalidad: Para retirar', `Nombre: ${fulfillment.name.trim()}`];
+  } else return null;
   const lines = selected.map((item) => `${quantities[item.id]} x ${item.name} — ${formatPrice(item.price * quantities[item.id])}`);
   const message = [
     'Hola, quisiera consultar por este pedido de la carta demo de Il Caminneto:',
+    '',
+    ...destination,
     '',
     ...lines,
     '',

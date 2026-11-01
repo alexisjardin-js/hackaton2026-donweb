@@ -4,7 +4,7 @@ import { ArrowUp, ChefHat, Sparkles } from 'lucide-react';
 type Message = { role: 'visitor' | 'assistant'; text: string };
 const suggestions = ['¿Qué me recomendás para cenar?', '¿Cuánto salen los sorrentinos?', '¿Qué lleva la pizza Margherita?'];
 
-export default function ChatWidget() {
+export default function ChatWidget({ mode }: { mode: 'table' | 'takeaway' | null }) {
   const [messages, setMessages] = useState<Message[]>([
     { role: 'assistant', text: '¡Bienvenido a la mesa! Soy el mozo digital de Il Caminneto. Contame qué tenés ganas de comer y te ayudo a elegir de nuestra carta demo.' },
   ]);
@@ -18,7 +18,7 @@ export default function ChatWidget() {
     setDraft('');
     setBusy(true);
     try {
-      const response = await fetch('/api/chat', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message }) });
+      const response = await fetch('/api/chat', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message, mode }) });
       const result = await response.json();
       setMessages((current) => [...current, { role: 'assistant', text: result.answer ?? result.error ?? 'No pude responder ahora.' }]);
     } catch {

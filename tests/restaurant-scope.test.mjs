@@ -6,6 +6,7 @@ import { isRestaurantQuestion } from '../src/lib/restaurant-scope.mjs';
 test('admite consultas sobre la carta y recomendaciones generales', () => {
   assert.equal(isRestaurantQuestion('¿Cuánto salen los sorrentinos?', menu), true);
   assert.equal(isRestaurantQuestion('¿Qué me recomendás para cenar?', menu), true);
+  assert.equal(isRestaurantQuestion('¿Puedo pasar a retirar?', menu), true);
 });
 
 test('rechaza temas ajenos al restaurante', () => {

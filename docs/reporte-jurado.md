@@ -9,7 +9,7 @@
 
 ## Resumen del proyecto
 
-Un asistente web para restaurantes que ayuda a los clientes a explorar la carta, resolver dudas relacionadas con el menú, elegir platos y preparar un pedido claro para su confirmación por WhatsApp. Busca reducir consultas repetitivas y oportunidades de venta perdidas por atención manual.
+Un asistente web para restaurantes que ayuda tanto a quienes están sentados en una mesa como a quienes piden para retirar. Permite explorar la carta, resolver dudas relacionadas con el menú, elegir platos y preparar un pedido claro para su confirmación por WhatsApp. Busca reducir consultas repetitivas y oportunidades de venta perdidas por atención manual.
 
 ## Problema
 
@@ -21,6 +21,7 @@ La atención por teléfono y WhatsApp concentra preguntas frecuentes y pedidos e
 - Asistente de IA restringido a la información del restaurante y la carta.
 - Recomendaciones relevantes para la decisión de compra, sin inventar datos.
 - Carrito y total calculados de forma determinista.
+- Modalidad explícita: mesa del local con número, o takeaway con nombre para el retiro.
 - Pedido estructurado listo para enviar por WhatsApp y confirmar con una persona.
 
 ## Diferencial
@@ -45,7 +46,7 @@ La experiencia se presenta como un **mozo digital integrado a una carta con iden
 | Validación | Zod | Propuesto |
 | Carta | `src/data/menu.json`: seis platos con precios de demo e imágenes generadas | Datos creados; interfaz pendiente |
 | Base de datos | No incluida en el MVP; no se almacenan pedidos en un panel | Propuesto |
-| Proveedor de IA | OpenAI Responses API desde endpoint SSR | Implementado; faltan clave y modelo configurados |
+| Proveedor de IA | OpenAI Responses API desde endpoint SSR; modelo GPT-6 Luna | Clave/modelo locales configurados; prueba mínima de API aprobada; flujo completo pendiente |
 | Despliegue | Servidor cloud de Donweb; configuración por verificar | Pendiente |
 
 ## Seguridad y límites explícitos

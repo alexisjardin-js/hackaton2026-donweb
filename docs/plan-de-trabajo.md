@@ -22,11 +22,12 @@ El restaurante pierde oportunidades porque responde a mano consultas repetidas y
 ## Flujo demostrable
 
 1. El visitante abre la carta, ve categorías, fotos, precios y acceso al asistente.
-2. Pregunta por un plato, una preferencia o un presupuesto.
-3. El asistente contesta usando únicamente información del restaurante presente en el JSON. Ante temas externos o datos ausentes, responde brevemente que no puede confirmarlos.
-4. El visitante agrega productos y modifica cantidades en el carrito.
-5. La aplicación calcula el total desde el catálogo y muestra el resumen.
-6. El visitante abre WhatsApp con el pedido precompletado; el restaurante lo confirma. No se presenta como pedido aceptado antes de esa confirmación.
+2. Elige si está en una mesa del local o si pasará a retirar; indica número de mesa o nombre, respectivamente.
+3. Pregunta por un plato, una preferencia o un presupuesto.
+4. El asistente contesta usando la carta JSON y conoce la modalidad elegida. Ante temas externos o datos ausentes, responde brevemente que no puede confirmarlos.
+5. El visitante agrega productos y modifica cantidades en el carrito.
+6. La aplicación calcula el total desde el catálogo y muestra el resumen.
+7. El visitante abre WhatsApp con modalidad, mesa o nombre y pedido precompletados; el restaurante lo confirma. No se presenta como pedido aceptado antes de esa confirmación.
 
 ## Arquitectura propuesta
 
@@ -59,7 +60,7 @@ El restaurante pierde oportunidades porque responde a mano consultas repetidas y
 - [x] El total no depende de texto generado por IA. (Prueba unitaria aprobada.)
 - [ ] La IA no da datos inexistentes ni responde consultas ajenas al restaurante. (Guardia local probada; modelo real pendiente de verificar.)
 - [ ] Una pregunta sobre alergias/ingredientes no documentados deriva a confirmación humana. (Instrucción implementada; modelo real pendiente de verificar.)
-- [x] El enlace de WhatsApp contiene ítems, cantidades y total correcto. (Prueba unitaria aprobada; envío real pendiente de número.)
+- [x] El enlace de WhatsApp contiene modalidad, mesa o nombre, ítems, cantidades y total correcto. (Prueba unitaria aprobada; apertura real pendiente.)
 - [ ] El flujo funciona en móvil.
 - [ ] La clave de IA no aparece en el cliente, en el JSON, en los documentos ni en Git.
 - [ ] La URL desplegada funciona desde otro dispositivo.

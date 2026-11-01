@@ -1,10 +1,11 @@
 import { useState } from 'react';
-import { ArrowRight, ChefHat, MapPin, Minus, Plus, ShoppingBag, Sparkles, X } from 'lucide-react';
+import { ArrowRight, ChefHat, MapPin, Minus, Plus, ShoppingBag, Sparkles, Store, UtensilsCrossed, X } from 'lucide-react';
 import { useCart } from '../store/cart';
 import { calculateTotal, createWhatsAppOrderUrl, formatPrice } from '../lib/cart.mjs';
 import ChatWidget from './ChatWidget';
 
 type Category = { id: string; name: string };
+type ServiceMode = 'table' | 'takeaway' | null;
 type Item = {
   id: string;
   categoryId: string;
@@ -19,6 +20,9 @@ type Item = {
 export default function MenuApp({ items, categories, whatsappNumber }: { items: Item[]; categories: Category[]; whatsappNumber: string }) {
   const [activeCategory, setActiveCategory] = useState('todos');
   const [cartOpen, setCartOpen] = useState(false);
+  const [serviceMode, setServiceMode] = useState<ServiceMode>(null);
+  const [tableNumber, setTableNumber] = useState('');
+  const [customerName, setCustomerName] = useState('');
   const quantities = useCart((state) => state.quantities);
   const add = useCart((state) => state.add);
   const remove = useCart((state) => state.remove);
@@ -26,7 +30,7 @@ export default function MenuApp({ items, categories, whatsappNumber }: { items: 
   const total = calculateTotal(items, quantities);
   const visibleItems = activeCategory === 'todos' ? items : items.filter((item) => item.categoryId === activeCategory);
   const selectedItems = items.filter((item) => quantities[item.id]);
-  const checkoutUrl = createWhatsAppOrderUrl(items, quantities, whatsappNumber);
+  const checkoutUrl = createWhatsAppOrderUrl(items, quantities, whatsappNumber, { type: serviceMode, table: tableNumber, name: customerName });
 
   return <>
     <header className="site-header">
@@ -43,7 +47,9 @@ export default function MenuApp({ items, categories, whatsappNumber }: { items: 
 
       <section className="intro-strip" id="experiencia"><span className="asterisk">✳</span><p>Un rincón para compartir, disfrutar y volver.</p><span className="intro-location"><MapPin size={15}/> Pueblo Esther, Santa Fe</span></section>
 
-      <ChatWidget />
+      <section className="service-section" id="pedido" aria-labelledby="service-title"><div className="service-heading"><p className="eyebrow">A TU MANERA</p><h2 id="service-title">¿Dónde lo vas a <em>disfrutar?</em></h2><p>Elegí cómo querés pedir. El mozo digital te acompaña tanto en una mesa como si pasás a retirar.</p></div><div className="service-options"><button className={`service-option ${serviceMode === 'table' ? 'selected' : ''}`} onClick={() => setServiceMode('table')} aria-pressed={serviceMode === 'table'}><span className="service-icon"><UtensilsCrossed size={26}/></span><strong>Estoy en el local</strong><small>Elegí desde tu mesa y prepará tu pedido.</small></button><button className={`service-option ${serviceMode === 'takeaway' ? 'selected' : ''}`} onClick={() => setServiceMode('takeaway')} aria-pressed={serviceMode === 'takeaway'}><span className="service-icon"><Store size={26}/></span><strong>Paso a retirar</strong><small>Pedí para llevar y coordiná el retiro.</small></button></div>{serviceMode && <div className="service-detail"><label htmlFor="service-detail">{serviceMode === 'table' ? 'Número de mesa' : 'Nombre para el pedido'}</label><input id="service-detail" value={serviceMode === 'table' ? tableNumber : customerName} onChange={(event) => serviceMode === 'table' ? setTableNumber(event.target.value) : setCustomerName(event.target.value)} placeholder={serviceMode === 'table' ? 'Ej.: 7' : 'Ej.: Alex'} maxLength={serviceMode === 'table' ? 10 : 60}/><small>{serviceMode === 'table' ? 'El restaurante confirma el pedido antes de prepararlo.' : 'El restaurante confirma cuándo estará listo para retirar.'}</small></div>}</section>
+
+      <ChatWidget mode={serviceMode} />
 
       <section className="menu-section" id="carta"><div className="section-heading"><div><p className="eyebrow">ELEGÍ TU PRÓXIMO FAVORITO</p><h2>Nuestra <em>carta</em></h2></div><p>De la cocina a tu mesa. Encontrá ese plato que hoy te está esperando.</p></div>
         <div className="category-list" role="group" aria-label="Filtrar por categoría"><button className={activeCategory === 'todos' ? 'active' : ''} onClick={() => setActiveCategory('todos')}>Todos</button>{categories.map((category) => <button key={category.id} className={activeCategory === category.id ? 'active' : ''} onClick={() => setActiveCategory(category.id)}>{category.name}</button>)}</div>
@@ -56,6 +62,6 @@ export default function MenuApp({ items, categories, whatsappNumber }: { items: 
 
     {count > 0 && !cartOpen && <button className="floating-cart" onClick={() => setCartOpen(true)}><ShoppingBag size={19}/><span>Ver mi pedido · {count} {count === 1 ? 'producto' : 'productos'}</span><strong>{formatPrice(total)}</strong></button>}
 
-    {cartOpen && <div className="drawer-overlay" onMouseDown={(event) => { if (event.target === event.currentTarget) setCartOpen(false); }}><aside className="cart-drawer" aria-label="Mi pedido"><div className="drawer-header"><div><p className="eyebrow">TU MESA, TU ELECCIÓN</p><h2>Mi pedido</h2></div><button className="icon-button" onClick={() => setCartOpen(false)} aria-label="Cerrar pedido"><X size={22}/></button></div>{selectedItems.length === 0 ? <div className="empty-cart"><ShoppingBag size={38}/><h3>Tu pedido está esperando</h3><p>Elegí algo rico de nuestra carta para empezar.</p><button className="primary-button" onClick={() => setCartOpen(false)}>Explorar la carta <ArrowRight size={17}/></button></div> : <><div className="cart-lines">{selectedItems.map((item) => <div className="cart-line" key={item.id}><img src={item.image} alt=""/><div><h3>{item.name}</h3><p>{formatPrice(item.price)}</p><div className="quantity-controls"><button onClick={() => remove(item.id)} aria-label={`Quitar uno de ${item.name}`}><Minus size={15}/></button><span>{quantities[item.id]}</span><button onClick={() => add(item.id)} aria-label={`Agregar uno de ${item.name}`}><Plus size={15}/></button></div></div><strong>{formatPrice(item.price * quantities[item.id])}</strong></div>)}</div><div className="cart-summary"><div><span>Total estimado</span><strong>{formatPrice(total)}</strong></div><p>Precios de demostración. Disponibilidad y precio final sujetos a confirmación.</p>{checkoutUrl ? <a className="checkout-button" href={checkoutUrl} target="_blank" rel="noopener noreferrer">Consultar pedido por WhatsApp <ArrowRight size={18}/></a> : <p className="checkout-unavailable">Falta configurar el número del restaurante para enviar el pedido.</p>}</div></>}</aside></div>}
+    {cartOpen && <div className="drawer-overlay" onMouseDown={(event) => { if (event.target === event.currentTarget) setCartOpen(false); }}><aside className="cart-drawer" aria-label="Mi pedido"><div className="drawer-header"><div><p className="eyebrow">TU MESA, TU ELECCIÓN</p><h2>Mi pedido</h2></div><button className="icon-button" onClick={() => setCartOpen(false)} aria-label="Cerrar pedido"><X size={22}/></button></div>{selectedItems.length === 0 ? <div className="empty-cart"><ShoppingBag size={38}/><h3>Tu pedido está esperando</h3><p>Elegí algo rico de nuestra carta para empezar.</p><button className="primary-button" onClick={() => setCartOpen(false)}>Explorar la carta <ArrowRight size={17}/></button></div> : <><div className="cart-lines">{selectedItems.map((item) => <div className="cart-line" key={item.id}><img src={item.image} alt=""/><div><h3>{item.name}</h3><p>{formatPrice(item.price)}</p><div className="quantity-controls"><button onClick={() => remove(item.id)} aria-label={`Quitar uno de ${item.name}`}><Minus size={15}/></button><span>{quantities[item.id]}</span><button onClick={() => add(item.id)} aria-label={`Agregar uno de ${item.name}`}><Plus size={15}/></button></div></div><strong>{formatPrice(item.price * quantities[item.id])}</strong></div>)}</div><div className="cart-summary"><div><span>Total estimado</span><strong>{formatPrice(total)}</strong></div><p>Precios de demostración. Disponibilidad y precio final sujetos a confirmación.</p>{checkoutUrl ? <a className="checkout-button" href={checkoutUrl} target="_blank" rel="noopener noreferrer">Consultar pedido por WhatsApp <ArrowRight size={18}/></a> : <p className="checkout-unavailable">Elegí la modalidad y completá mesa o nombre arriba para preparar el envío.</p>}</div></>}</aside></div>}
   </>;
 }
