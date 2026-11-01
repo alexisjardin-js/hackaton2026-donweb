@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { ArrowRight, ChefHat, MapPin, Minus, Plus, ShoppingBag, Sparkles, X } from 'lucide-react';
 import { useCart } from '../store/cart';
-import { calculateTotal, formatPrice } from '../lib/cart.mjs';
+import { calculateTotal, createWhatsAppOrderUrl, formatPrice } from '../lib/cart.mjs';
 
 type Category = { id: string; name: string };
 type Item = {
@@ -15,7 +15,7 @@ type Item = {
   featured: boolean;
 };
 
-export default function MenuApp({ items, categories }: { items: Item[]; categories: Category[] }) {
+export default function MenuApp({ items, categories, whatsappNumber }: { items: Item[]; categories: Category[]; whatsappNumber: string }) {
   const [activeCategory, setActiveCategory] = useState('todos');
   const [cartOpen, setCartOpen] = useState(false);
   const quantities = useCart((state) => state.quantities);
@@ -25,6 +25,7 @@ export default function MenuApp({ items, categories }: { items: Item[]; categori
   const total = calculateTotal(items, quantities);
   const visibleItems = activeCategory === 'todos' ? items : items.filter((item) => item.categoryId === activeCategory);
   const selectedItems = items.filter((item) => quantities[item.id]);
+  const checkoutUrl = createWhatsAppOrderUrl(items, quantities, whatsappNumber);
 
   return <>
     <header className="site-header">
@@ -52,6 +53,6 @@ export default function MenuApp({ items, categories }: { items: Item[]; categori
 
     {count > 0 && !cartOpen && <button className="floating-cart" onClick={() => setCartOpen(true)}><ShoppingBag size={19}/><span>Ver mi pedido · {count} {count === 1 ? 'producto' : 'productos'}</span><strong>{formatPrice(total)}</strong></button>}
 
-    {cartOpen && <div className="drawer-overlay" onMouseDown={(event) => { if (event.target === event.currentTarget) setCartOpen(false); }}><aside className="cart-drawer" aria-label="Mi pedido"><div className="drawer-header"><div><p className="eyebrow">TU MESA, TU ELECCIÓN</p><h2>Mi pedido</h2></div><button className="icon-button" onClick={() => setCartOpen(false)} aria-label="Cerrar pedido"><X size={22}/></button></div>{selectedItems.length === 0 ? <div className="empty-cart"><ShoppingBag size={38}/><h3>Tu pedido está esperando</h3><p>Elegí algo rico de nuestra carta para empezar.</p><button className="primary-button" onClick={() => setCartOpen(false)}>Explorar la carta <ArrowRight size={17}/></button></div> : <><div className="cart-lines">{selectedItems.map((item) => <div className="cart-line" key={item.id}><img src={item.image} alt=""/><div><h3>{item.name}</h3><p>{formatPrice(item.price)}</p><div className="quantity-controls"><button onClick={() => remove(item.id)} aria-label={`Quitar uno de ${item.name}`}><Minus size={15}/></button><span>{quantities[item.id]}</span><button onClick={() => add(item.id)} aria-label={`Agregar uno de ${item.name}`}><Plus size={15}/></button></div></div><strong>{formatPrice(item.price * quantities[item.id])}</strong></div>)}</div><div className="cart-summary"><div><span>Total estimado</span><strong>{formatPrice(total)}</strong></div><p>Precios de demostración. La confirmación del pedido estará disponible próximamente.</p></div></>}</aside></div>}
+    {cartOpen && <div className="drawer-overlay" onMouseDown={(event) => { if (event.target === event.currentTarget) setCartOpen(false); }}><aside className="cart-drawer" aria-label="Mi pedido"><div className="drawer-header"><div><p className="eyebrow">TU MESA, TU ELECCIÓN</p><h2>Mi pedido</h2></div><button className="icon-button" onClick={() => setCartOpen(false)} aria-label="Cerrar pedido"><X size={22}/></button></div>{selectedItems.length === 0 ? <div className="empty-cart"><ShoppingBag size={38}/><h3>Tu pedido está esperando</h3><p>Elegí algo rico de nuestra carta para empezar.</p><button className="primary-button" onClick={() => setCartOpen(false)}>Explorar la carta <ArrowRight size={17}/></button></div> : <><div className="cart-lines">{selectedItems.map((item) => <div className="cart-line" key={item.id}><img src={item.image} alt=""/><div><h3>{item.name}</h3><p>{formatPrice(item.price)}</p><div className="quantity-controls"><button onClick={() => remove(item.id)} aria-label={`Quitar uno de ${item.name}`}><Minus size={15}/></button><span>{quantities[item.id]}</span><button onClick={() => add(item.id)} aria-label={`Agregar uno de ${item.name}`}><Plus size={15}/></button></div></div><strong>{formatPrice(item.price * quantities[item.id])}</strong></div>)}</div><div className="cart-summary"><div><span>Total estimado</span><strong>{formatPrice(total)}</strong></div><p>Precios de demostración. Disponibilidad y precio final sujetos a confirmación.</p>{checkoutUrl ? <a className="checkout-button" href={checkoutUrl} target="_blank" rel="noopener noreferrer">Consultar pedido por WhatsApp <ArrowRight size={18}/></a> : <p className="checkout-unavailable">Falta configurar el número del restaurante para enviar el pedido.</p>}</div></>}</aside></div>}
   </>;
 }

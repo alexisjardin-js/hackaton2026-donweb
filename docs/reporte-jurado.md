@@ -33,7 +33,7 @@ La experiencia se presenta como un **mozo digital integrado a una carta con iden
 2. Consultar por una recomendación basada en el menú. **Estado:** pendiente.
 3. Hacer una pregunta ajena al restaurante y observar el límite de respuesta. **Estado:** pendiente.
 4. Agregar platos, cambiar cantidades y verificar el total. **Estado:** implementado; cálculo probado de forma unitaria, interacción en navegador pendiente de verificar.
-5. Abrir WhatsApp con el resumen del pedido. **Estado:** pendiente.
+5. Abrir WhatsApp con el resumen del pedido. **Estado:** enlace implementado y probado de forma unitaria; falta configurar el número y probar la apertura real.
 
 ## Decisiones técnicas
 

@@ -1,6 +1,6 @@
 # Plan de trabajo — Mozo digital para restaurante
 
-**Estado:** implementación en curso (carta y carrito terminados; IA y envío pendientes)  
+**Estado:** implementación en curso (carta, carrito y enlace de pedido implementados; IA pendiente)  
 **Restricción:** MVP funcional y desplegado durante la hackatón (ventana total: 3 horas).  
 **Repositorio objetivo:** https://github.com/alexisjardin-js/hackaton2026-donweb.git  
 **Nota:** este directorio todavía no está vinculado a Git; verificar el repositorio remoto antes de publicar.
@@ -59,7 +59,7 @@ El restaurante pierde oportunidades porque responde a mano consultas repetidas y
 - [x] El total no depende de texto generado por IA. (Prueba unitaria aprobada.)
 - [ ] La IA no da datos inexistentes ni responde consultas ajenas al restaurante.
 - [ ] Una pregunta sobre alergias/ingredientes no documentados deriva a confirmación humana.
-- [ ] El pedido enviado a WhatsApp contiene ítems, cantidades y total correcto.
+- [x] El enlace de WhatsApp contiene ítems, cantidades y total correcto. (Prueba unitaria aprobada; envío real pendiente de número.)
 - [ ] El flujo funciona en móvil.
 - [ ] La clave de IA no aparece en el cliente, en el JSON, en los documentos ni en Git.
 - [ ] La URL desplegada funciona desde otro dispositivo.

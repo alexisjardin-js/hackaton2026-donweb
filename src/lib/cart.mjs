@@ -15,3 +15,19 @@ export function formatPrice(amount) {
     maximumFractionDigits: 0,
   }).format(amount);
 }
+
+export function createWhatsAppOrderUrl(items, quantities, phone) {
+  if (!/^\d{8,15}$/.test(phone)) return null;
+  const selected = items.filter((item) => (quantities[item.id] ?? 0) > 0);
+  if (selected.length === 0) return null;
+  const lines = selected.map((item) => `${quantities[item.id]} x ${item.name} — ${formatPrice(item.price * quantities[item.id])}`);
+  const message = [
+    'Hola, quisiera consultar por este pedido de la carta demo de Il Caminneto:',
+    '',
+    ...lines,
+    '',
+    `Total estimado: ${formatPrice(calculateTotal(items, quantities))}`,
+    'Entiendo que los precios y la disponibilidad deben ser confirmados por el restaurante.',
+  ].join('\n');
+  return `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+}
