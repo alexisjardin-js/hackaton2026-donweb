@@ -83,4 +83,4 @@ El E2E descubrió un rechazo incorrecto de consultas sobre celiaquía cuando se 
 
 ## Próxima actualización
 
-Marcar cada criterio solo cuando esté verificado y registrar la URL de despliegue y evidencia en `docs/reporte-jurado.md`.
+Marcar cada criterio solo cuando esté verificado y registrar la URL de despliegue y evidencia en `INFORME_JURADO.md`.
