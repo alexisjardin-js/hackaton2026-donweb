@@ -3,7 +3,7 @@
 - **Proyecto:** mozo digital para un restaurante de Pueblo Esther, Santa Fe.
 - **Desafío:** reducir ventas perdidas por consultas y pedidos atendidos manualmente por WhatsApp o teléfono.
 - **Repositorio:** https://github.com/alexisjardin-js/hackaton2026-donweb
-- **Demo pública:** pendiente de incorporar la URL verificada.
+- **Demo pública:** http://dwday-79759057.online/ (apertura HTTP 200 verificada; recorrido completo en producción aún no verificado).
 
 ## El problema
 
@@ -21,13 +21,13 @@ El mozo no es un chat decorativo: responde sobre la carta, recuerda el tramo rec
 2. **Consulta:** el mozo responde preguntas sobre platos, ingredientes informados y recomendaciones. Si falta información —por ejemplo, seguridad para una persona celíaca— pide confirmación al restaurante.
 3. **Elección:** las recomendaciones se vinculan a IDs reales de la carta JSON. El servidor descarta IDs inexistentes; el cliente decide qué agregar.
 4. **Pedido:** el carrito permite cambiar cantidades, vaciarlo y recuperar los platos tras recargar la página. El total se calcula con código a partir de los precios del JSON, no con texto generado por IA.
-5. **Salida:** un enlace `wa.me` abre un mensaje con modalidad, mesa o nombre, platos, cantidades y total estimado. **No equivale a un pedido recibido o aceptado automáticamente.**
+5. **Salida:** un enlace `wa.me` abre un mensaje con modalidad, mesa o nombre, platos, cantidades y total estimado. El carrito se conserva al abrir WhatsApp; si el cliente confirma que envió el mensaje, puede iniciar otro pedido y vaciarlo. **Esto no equivale a un pedido recibido o aceptado automáticamente.**
 
 ## Decisiones técnicas
 
 | Necesidad | Implementación |
 | --- | --- |
-| Web y endpoint seguro | Astro SSR con adaptador Node standalone |
+| Web SSR y endpoint del mozo | Astro con adaptador Node standalone |
 | Interacción | Componentes React y Zustand; carrito persistido en `localStorage` |
 | Identidad visual | Diseño gastronómico propio con Tailwind, paleta crema/terracota/verde, Lucide e imágenes de platos |
 | Validación | Zod para entradas; IDs de sugerencias contrastados contra la carta |
@@ -45,7 +45,7 @@ Un E2E local con Astro y Chrome comprobó el recorrido en viewport móvil de 390
 - [Carta desktop](docs/evidence/desktop-carta.png)
 - [Pedido en móvil](docs/evidence/mobile-pedido.png)
 
-**Alcance de la evidencia:** el E2E fue local y emuló un móvil; no prueba por sí solo el despliegue público, la recepción real del mensaje por WhatsApp ni resultados comerciales. La URL pública y su prueba desde otro dispositivo deben agregarse arriba antes de la entrega.
+**Alcance de la evidencia:** el E2E fue local y emuló un móvil; no prueba por sí solo el recorrido completo en producción, la recepción real del mensaje por WhatsApp ni resultados comerciales. La URL pública respondió HTTP 200, pero la interacción posterior al enlace de WhatsApp y la IA en producción no forman parte de ese E2E.
 
 ## Guion breve de demostración
 
