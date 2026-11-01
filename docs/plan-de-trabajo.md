@@ -1,9 +1,9 @@
 # Plan de trabajo — Mozo digital para restaurante
 
-**Estado:** implementación en curso (carta, carrito, pedido y mozo digital implementados; conexión real de IA y despliegue pendientes)  
-**Restricción:** MVP funcional y desplegado durante la hackatón (ventana total: 3 horas).  
+**Estado:** implementación en curso (mozo con sugerencias accionables; recorrido en navegador y despliegue pendientes)  
+**Restricción:** entrega pública en Cloud Server de DonWeb antes de las 18:30 del evento.  
 **Repositorio objetivo:** https://github.com/alexisjardin-js/hackaton2026-donweb.git  
-**Nota:** este directorio todavía no está vinculado a Git; verificar el repositorio remoto antes de publicar.
+**Nota:** repositorio local vinculado a `origin`; todavía no se publicó ni desplegó.
 **Restaurante de la demo:** Il Caminneto, Pueblo Esther, Santa Fe. La carta y los precios generados para la demo no están verificados como oferta real.
 
 ## Problema y objetivo
@@ -22,10 +22,10 @@ El restaurante pierde oportunidades porque responde a mano consultas repetidas y
 ## Flujo demostrable
 
 1. El visitante abre la carta, ve categorías, fotos, precios y acceso al asistente.
-2. Elige si está en una mesa del local o si pasará a retirar; indica número de mesa o nombre, respectivamente.
+2. Elige al comenzar si está en una mesa del local o si pasará a retirar. La mesa o el nombre se piden recién al cerrar el pedido.
 3. Pregunta por un plato, una preferencia o un presupuesto.
-4. El asistente contesta usando la carta JSON y conoce la modalidad elegida. Ante temas externos o datos ausentes, responde brevemente que no puede confirmarlos.
-5. El visitante agrega productos y modifica cantidades en el carrito.
+4. El asistente contesta usando la carta JSON y conoce la modalidad elegida. Puede devolver IDs de hasta tres platos sugeridos; la aplicación valida esos IDs contra el JSON y muestra botones para agregarlos. Ante temas externos o datos ausentes, responde brevemente que no puede confirmarlos.
+5. El visitante decide qué sugerencias agregar y modifica cantidades en el carrito; la IA nunca agrega por sí sola.
 6. La aplicación calcula el total desde el catálogo y muestra el resumen.
 7. El visitante abre WhatsApp con modalidad, mesa o nombre y pedido precompletados; el restaurante lo confirma. No se presenta como pedido aceptado antes de esa confirmación.
 
@@ -42,7 +42,7 @@ El restaurante pierde oportunidades porque responde a mano consultas repetidas y
 | IA | Endpoint del servidor; clave solo en variable de entorno del servidor |
 | Pedidos | Mensaje precompletado de WhatsApp; confirmación humana |
 
-**Decisión pendiente:** proveedor/modelo de IA y detalles del servidor de despliegue. Verificarlos antes de implementar esa conexión.
+**Modelo elegido:** GPT-6 Luna, configurado localmente junto con la clave en `.env` ignorado. La API respondió en una prueba mínima y una prueba de salida estructurada. Pendiente: verificar el recorrido completo y el servidor de despliegue.
 
 ## Plan por bloques (orientativo, no cronómetro rígido)
 
@@ -58,7 +58,7 @@ El restaurante pierde oportunidades porque responde a mano consultas repetidas y
 - [x] La carta visible toma los datos del JSON. (Verificado con revisión de código; prueba HTTP pendiente.)
 - [x] La UI tiene identidad gastronómica propia, no apariencia genérica de chatbot. (Implementada; revisión visual pendiente.)
 - [x] El total no depende de texto generado por IA. (Prueba unitaria aprobada.)
-- [ ] La IA no da datos inexistentes ni responde consultas ajenas al restaurante. (Guardia local probada; modelo real pendiente de verificar.)
+- [ ] La IA no da datos inexistentes ni responde consultas ajenas al restaurante. (Guardia local y salida estructurada probadas; recorrido completo pendiente.)
 - [ ] Una pregunta sobre alergias/ingredientes no documentados deriva a confirmación humana. (Instrucción implementada; modelo real pendiente de verificar.)
 - [x] El enlace de WhatsApp contiene modalidad, mesa o nombre, ítems, cantidades y total correcto. (Prueba unitaria aprobada; apertura real pendiente.)
 - [ ] El flujo funciona en móvil.

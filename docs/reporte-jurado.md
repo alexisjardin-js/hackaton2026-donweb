@@ -31,10 +31,10 @@ La experiencia se presenta como un **mozo digital integrado a una carta con iden
 ## Recorrido de demo (actualizar con evidencia)
 
 1. Abrir la carta desde la URL pública. **Estado:** interfaz implementada; despliegue y prueba pública pendientes.
-2. Consultar por una recomendación basada en el menú. **Estado:** chat y endpoint implementados; conexión al modelo pendiente de credenciales.
+2. Elegir modalidad y consultar por una recomendación basada en el menú. **Estado:** selector al inicio y sugerencias accionables implementadas; recorrido en navegador pendiente.
 3. Hacer una pregunta ajena al restaurante y observar el límite de respuesta. **Estado:** guardia local probada; comportamiento del modelo real pendiente.
-4. Agregar platos, cambiar cantidades y verificar el total. **Estado:** implementado; cálculo probado de forma unitaria, interacción en navegador pendiente de verificar.
-5. Abrir WhatsApp con el resumen del pedido. **Estado:** enlace implementado y probado de forma unitaria; falta configurar el número y probar la apertura real.
+4. Agregar un plato recomendado por el mozo, cambiar cantidades y verificar el total. **Estado:** validación de IDs y cálculo probados de forma unitaria; interacción en navegador pendiente.
+5. Abrir WhatsApp con el resumen del pedido. **Estado:** enlace implementado y probado de forma unitaria; número local configurado, apertura real pendiente.
 
 ## Decisiones técnicas
 
@@ -43,8 +43,8 @@ La experiencia se presenta como un **mozo digital integrado a una carta con iden
 | Framework | Astro SSR + componente React interactivo para carta y carrito | Implementado; despliegue pendiente |
 | Estilos | Tailwind con paleta y diseño propios | Implementado; revisión visual pendiente |
 | Estado de interfaz | Zustand para carrito | Implementado |
-| Validación | Zod | Propuesto |
-| Carta | `src/data/menu.json`: seis platos con precios de demo e imágenes generadas | Datos creados; interfaz pendiente |
+| Validación | Zod para consulta y salida estructurada, con IDs contrastados contra JSON | Implementado; pruebas unitarias aprobadas |
+| Carta | `src/data/menu.json`: seis platos con precios de demo e imágenes generadas | Interfaz implementada; revisión visual pendiente |
 | Base de datos | No incluida en el MVP; no se almacenan pedidos en un panel | Propuesto |
 | Proveedor de IA | OpenAI Responses API desde endpoint SSR; modelo GPT-6 Luna | Clave/modelo locales configurados; prueba mínima de API aprobada; flujo completo pendiente |
 | Despliegue | Servidor cloud de Donweb; configuración por verificar | Pendiente |
