@@ -19,14 +19,14 @@ La atención por teléfono y WhatsApp concentra preguntas frecuentes y pedidos e
 
 - Carta digital basada en un archivo JSON versionado.
 - Asistente de IA restringido a la información del restaurante y la carta.
-- Recomendaciones relevantes para la decisión de compra, sin inventar datos.
+- Recomendaciones relevantes para la decisión de compra, con contexto reciente de la charla y del carrito, sin inventar datos.
 - Carrito y total calculados de forma determinista.
 - Modalidad explícita: mesa del local con número, o takeaway con nombre para el retiro.
 - Pedido estructurado listo para enviar por WhatsApp y confirmar con una persona.
 
 ## Diferencial
 
-La experiencia se presenta como un **mozo digital integrado a una carta con identidad gastronómica propia**, no como un chatbot genérico. La IA facilita el descubrimiento; los datos del menú y la lógica de precios mantienen el pedido verificable.
+La experiencia se presenta como un **mozo digital integrado a una carta con identidad gastronómica propia**, no como un chatbot genérico. El mozo recuerda el tramo reciente de la conversación y ve qué platos ya eligió el cliente para sugerir complementos; los nombres y precios salen del JSON del servidor. La IA facilita el descubrimiento; los datos del menú y la lógica de precios mantienen el pedido verificable.
 
 ## Recorrido de demo (actualizar con evidencia)
 

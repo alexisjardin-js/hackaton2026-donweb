@@ -23,7 +23,8 @@ export default function ChatWidget({ mode, items }: { mode: 'table' | 'takeaway'
     setDraft('');
     setBusy(true);
     try {
-      const response = await fetch('/api/chat', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message, mode }) });
+      const history = messages.slice(1).slice(-6).map((entry) => ({ role: entry.role === 'visitor' ? 'user' : 'assistant', content: entry.text }));
+      const response = await fetch('/api/chat', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message, mode, history, cart: quantities }) });
       const result = await response.json();
       const validIds = new Set(items.map((item) => item.id));
       const suggestedItemIds = Array.isArray(result.suggestedItemIds)

@@ -1,9 +1,9 @@
 # Plan de trabajo — Mozo digital para restaurante
 
-**Estado:** implementación en curso (mozo con sugerencias accionables; recorrido en navegador y despliegue pendientes)  
+**Estado:** implementación en curso (mozo con sugerencias y contexto del pedido; recorrido en navegador y despliegue pendientes)
 **Restricción:** entrega pública en Cloud Server de DonWeb antes de las 18:30 del evento.  
 **Repositorio objetivo:** https://github.com/alexisjardin-js/hackaton2026-donweb.git  
-**Nota:** repositorio local vinculado a `origin`; todavía no se publicó ni desplegó.
+**Nota:** código publicado en `origin/main`; el despliegue lo realiza el equipo por separado.
 **Restaurante de la demo:** Il Caminneto, Pueblo Esther, Santa Fe. La carta y los precios generados para la demo no están verificados como oferta real.
 
 ## Problema y objetivo
@@ -24,7 +24,7 @@ El restaurante pierde oportunidades porque responde a mano consultas repetidas y
 1. El visitante abre la carta, ve categorías, fotos, precios y acceso al asistente.
 2. Elige al comenzar si está en una mesa del local o si pasará a retirar. La mesa o el nombre se piden recién al cerrar el pedido.
 3. Pregunta por un plato, una preferencia o un presupuesto.
-4. El asistente contesta usando la carta JSON y conoce la modalidad elegida. Puede devolver IDs de hasta tres platos sugeridos; la aplicación valida esos IDs contra el JSON y muestra botones para agregarlos. Ante temas externos o datos ausentes, responde brevemente que no puede confirmarlos.
+4. El asistente contesta usando la carta JSON, la modalidad, hasta seis mensajes recientes y el carrito calculado desde el catálogo del servidor. Puede devolver IDs de hasta tres platos sugeridos; la aplicación valida esos IDs contra el JSON y muestra botones para agregarlos. Ante temas externos o datos ausentes, responde brevemente que no puede confirmarlos.
 5. El visitante decide qué sugerencias agregar y modifica cantidades en el carrito; la IA nunca agrega por sí sola.
 6. La aplicación calcula el total desde el catálogo y muestra el resumen.
 7. El visitante abre WhatsApp con modalidad, mesa o nombre y pedido precompletados; el restaurante lo confirma. No se presenta como pedido aceptado antes de esa confirmación.
