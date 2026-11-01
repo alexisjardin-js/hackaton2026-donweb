@@ -30,8 +30,8 @@ La experiencia se presenta como un **mozo digital integrado a una carta con iden
 ## Recorrido de demo (actualizar con evidencia)
 
 1. Abrir la carta desde la URL pública. **Estado:** interfaz implementada; despliegue y prueba pública pendientes.
-2. Consultar por una recomendación basada en el menú. **Estado:** pendiente.
-3. Hacer una pregunta ajena al restaurante y observar el límite de respuesta. **Estado:** pendiente.
+2. Consultar por una recomendación basada en el menú. **Estado:** chat y endpoint implementados; conexión al modelo pendiente de credenciales.
+3. Hacer una pregunta ajena al restaurante y observar el límite de respuesta. **Estado:** guardia local probada; comportamiento del modelo real pendiente.
 4. Agregar platos, cambiar cantidades y verificar el total. **Estado:** implementado; cálculo probado de forma unitaria, interacción en navegador pendiente de verificar.
 5. Abrir WhatsApp con el resumen del pedido. **Estado:** enlace implementado y probado de forma unitaria; falta configurar el número y probar la apertura real.
 
@@ -45,7 +45,7 @@ La experiencia se presenta como un **mozo digital integrado a una carta con iden
 | Validación | Zod | Propuesto |
 | Carta | `src/data/menu.json`: seis platos con precios de demo e imágenes generadas | Datos creados; interfaz pendiente |
 | Base de datos | No incluida en el MVP; no se almacenan pedidos en un panel | Propuesto |
-| Proveedor de IA | Por definir | Pendiente |
+| Proveedor de IA | OpenAI Responses API desde endpoint SSR | Implementado; faltan clave y modelo configurados |
 | Despliegue | Servidor cloud de Donweb; configuración por verificar | Pendiente |
 
 ## Seguridad y límites explícitos

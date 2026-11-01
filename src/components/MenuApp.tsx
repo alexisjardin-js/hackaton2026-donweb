@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { ArrowRight, ChefHat, MapPin, Minus, Plus, ShoppingBag, Sparkles, X } from 'lucide-react';
 import { useCart } from '../store/cart';
 import { calculateTotal, createWhatsAppOrderUrl, formatPrice } from '../lib/cart.mjs';
+import ChatWidget from './ChatWidget';
 
 type Category = { id: string; name: string };
 type Item = {
@@ -36,11 +37,13 @@ export default function MenuApp({ items, categories, whatsappNumber }: { items: 
 
     <main id="inicio">
       <section className="hero">
-        <div className="hero-copy"><p className="eyebrow"><span className="eyebrow-line"/> PUEBLO ESTHER · SANTA FE</p><h1>La mesa está <em>servida.</em></h1><p className="hero-lead">Sabores que invitan a quedarse. Explorá nuestra carta, elegí lo que más te guste y armá tu pedido a tu ritmo.</p><div className="hero-actions"><a className="primary-button" href="#carta">Explorar la carta <ArrowRight size={18}/></a><a className="text-link" href="#experiencia">Conocé nuestra esencia</a></div><div className="hero-note"><span className="hero-note-icon"><Sparkles size={18}/></span><span>Pronto vas a poder pedir recomendaciones a nuestro mozo digital.</span></div></div>
+        <div className="hero-copy"><p className="eyebrow"><span className="eyebrow-line"/> PUEBLO ESTHER · SANTA FE</p><h1>La mesa está <em>servida.</em></h1><p className="hero-lead">Sabores que invitan a quedarse. Explorá nuestra carta, elegí lo que más te guste y armá tu pedido a tu ritmo.</p><div className="hero-actions"><a className="primary-button" href="#carta">Explorar la carta <ArrowRight size={18}/></a><a className="text-link" href="#mozo">Hablá con el mozo digital</a></div><div className="hero-note"><span className="hero-note-icon"><Sparkles size={18}/></span><span>¿No sabés qué pedir? Nuestro mozo digital te ayuda a elegir de la carta.</span></div></div>
         <div className="hero-visual"><img src="/images/menu/sorrentinos.png" alt="Sorrentinos de ricota y espinaca de la carta demostrativa"/><div className="hero-stamp"><ChefHat size={21}/><span>HECHO PARA<br/>DISFRUTAR</span></div><div className="hero-visual-caption">Un buen plato siempre cuenta una historia.</div></div>
       </section>
 
       <section className="intro-strip" id="experiencia"><span className="asterisk">✳</span><p>Un rincón para compartir, disfrutar y volver.</p><span className="intro-location"><MapPin size={15}/> Pueblo Esther, Santa Fe</span></section>
+
+      <ChatWidget />
 
       <section className="menu-section" id="carta"><div className="section-heading"><div><p className="eyebrow">ELEGÍ TU PRÓXIMO FAVORITO</p><h2>Nuestra <em>carta</em></h2></div><p>De la cocina a tu mesa. Encontrá ese plato que hoy te está esperando.</p></div>
         <div className="category-list" role="group" aria-label="Filtrar por categoría"><button className={activeCategory === 'todos' ? 'active' : ''} onClick={() => setActiveCategory('todos')}>Todos</button>{categories.map((category) => <button key={category.id} className={activeCategory === category.id ? 'active' : ''} onClick={() => setActiveCategory(category.id)}>{category.name}</button>)}</div>
